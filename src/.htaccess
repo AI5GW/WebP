@@ -1,0 +1,21 @@
+RewriteBase /wp-content/uploads/
+
+<IfModule mod_rewrite.c>
+    # Check if the browser accepts WEBP
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    # Only apply the rule if the requested file is an existing jpg, png, or jpeg
+    RewriteCond %{REQUEST_FILENAME} \.(jpe?g|png)$ [NC]
+    RewriteCond %{REQUEST_FILENAME}.webp -f
+    # Rewrite the request to the corresponding .webp file
+    RewriteRule ^(.*)\.(jpe?g|png)$ $1.$2.webp [L,T=image/webp]
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    # Check if the browser accepts WEBP
+    RewriteCond %{HTTP_ACCEPT} image/webp
+    # Check if the request is for an existing image file (jpg, png, jpeg)
+    RewriteCond %{REQUEST_FILENAME} \.(jpe?g|png)$ [NC]
+    RewriteCond %{REQUEST_FILENAME} -f
+    # Redirect the request to the webp.php script for conversion
+    RewriteRule ^(.*)\.(jpe?g|png)$ /wp-content/uploads/webp.php?file=$1.$2 [NC,L]
+</IfModule>
